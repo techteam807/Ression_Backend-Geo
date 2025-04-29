@@ -18,22 +18,30 @@ const getCoordinatesFromShortLink = async (shortUrl) => {
 
   try {
     if (shortUrl && shortUrl.startsWith("https://maps.app.goo.gl")) {
-      await page.goto(shortUrl, { waitUntil: 'networkidle2' });
-
-      const currentUrl = page.url();
-      const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
-      const match = currentUrl.match(regex);
-
-      if (match) {
-        const lat = parseFloat(match[1]);
-        const lng = parseFloat(match[2]);
-        return { lat, lng };
-      } else {
-        return null;
-      }
-    } else {
-      return null;
-    }
+              await page.goto(shortUrl, { waitUntil: 'networkidle2' });
+        
+              const currentUrl = page.url();
+              // console.log("Resolved URL:", currentUrl);
+        
+              // Regex to extract coordinates from the URL
+              const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
+              const match = currentUrl.match(regex);
+        
+              if (match) {
+                const lat = parseFloat(match[1]);
+                const lng = parseFloat(match[2]);
+        
+                // Log coordinates (you can store these in your model here)
+                console.log(`Coordinates for ${shortUrl}: Latitude: ${lat}, Longitude: ${lng}`);
+                return { lat, lng };
+              } else {
+                console.log("Could not extract coordinates for:", shortUrl);
+                return null;
+              }
+            } else {
+              console.log("Invalid Google Maps link:", shortUrl);
+              return null;
+            }
   } catch (err) {
     console.error("Error extracting coordinates:", err);
     return null;
