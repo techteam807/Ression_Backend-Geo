@@ -18,7 +18,7 @@ const getCoordinatesFromShortLink = async (shortUrl) => {
 
   try {
     if (shortUrl && shortUrl.startsWith("https://maps.app.goo.gl")) {
-              await page.goto(shortUrl, { waitUntil: 'networkidle2' });
+              await page.goto(shortUrl, { waitUntil: 'networkidle2' , timeout: 3000 });
         
               const currentUrl = page.url();
               // console.log("Resolved URL:", currentUrl);
